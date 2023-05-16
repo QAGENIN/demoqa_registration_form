@@ -2,6 +2,7 @@ from selene import browser, have, be
 import os
 from tests import resources
 
+
 def test_homework():
     browser.open('/automation-practice-form')
     browser.execute_script('document.querySelector(".body-height").style.transform = "scale(.5)"')
