@@ -1,5 +1,7 @@
+from demoqa_registration_form.users_data.users import student, User
 from selene import browser, have, be
 import os
+
 
 class RegistrationPage:
     def __init__(self):
@@ -52,5 +54,36 @@ class RegistrationPage:
     def assert_form_submission_text(self, expected_text):
         browser.element('#example-modal-sizes-title-lg').should(have.text(expected_text))
 
-    def assert_user_data(self, *values):
-        browser.all('tbody tr').should(have.exact_texts(values))
+    def assert_user_data(self, student: User):
+        full_name = f'{student.first_name} {student.last_name}'
+        full_birthday = f'{student.date_of_birth[0]} {student.date_of_birth[1]},{student.date_of_birth[2]}'
+        expected_values = [
+            f'Student Name {full_name}',
+            f'Student Email {student.email}',
+            f'Gender {student.gender}',
+            f'Mobile {student.phone_number}',
+            f'Date of Birth {full_birthday}',
+            f'Subjects {student.subject}',
+            f'Hobbies {student.hobby}',
+            f'Picture {student.picture_file}',
+            f'Address {student.address}',
+            f'State and City {student.state} {student.city}'
+        ]
+
+    def register(self, student: User):
+        self.fill_first_name('Test')
+        self.fill_last_name('Test')
+        self.fill_email('test@test.com')
+        self.pick_gender('Male')
+        self.fill_phone('1234567891')
+        self.date_of_birth_input(24, 'August', 1994)
+        self.fill_subjects('Maths')
+        self.choose_hobby('Sports')
+        self.upload_pic('test.png')
+        self.fill_current_adress('Test-city, test street, test house 2')
+        self.select_state('NCR')
+        self.select_city('Delphi')
+        self.submit_form()
+
+    def should_have_registered(self, student: User):
+        self.assert_user_data(student)
