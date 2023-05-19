@@ -12,4 +12,3 @@ def test_registration_page(browser_setting):
 
     registration_page.should_have_registered(student)
 
-    registration_page.open()

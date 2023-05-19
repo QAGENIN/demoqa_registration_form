@@ -25,7 +25,8 @@ class RegistrationPage:
     def fill_phone(self, value):
         browser.element('[id="userNumber"]').send_keys(value)
 
-    def date_of_birth_input(self, day, month, year):
+    def date_of_birth_input(self, date_of_birth):
+        day, month, year = date_of_birth
         browser.element('#dateOfBirthInput').click()
         browser.execute_script('document.getElementById("dateOfBirthInput").value = ""')
         browser.element('#dateOfBirthInput').send_keys(f'{day} {month} {year}').press_enter()
@@ -51,9 +52,6 @@ class RegistrationPage:
     def submit_form(self):
         browser.execute_script('document.getElementById("submit").click()')
 
-    def assert_form_submission_text(self, expected_text):
-        browser.element('#example-modal-sizes-title-lg').should(have.text(expected_text))
-
     def assert_user_data(self, student: User):
         full_name = f'{student.first_name} {student.last_name}'
         full_birthday = f'{student.date_of_birth[0]} {student.date_of_birth[1]},{student.date_of_birth[2]}'
@@ -69,20 +67,21 @@ class RegistrationPage:
             f'Address {student.address}',
             f'State and City {student.state} {student.city}'
         ]
+        browser.all('tbody tr').should(have.exact_texts(*expected_values))
 
     def register(self, student: User):
-        self.fill_first_name('Test')
-        self.fill_last_name('Test')
-        self.fill_email('test@test.com')
-        self.pick_gender('Male')
-        self.fill_phone('1234567891')
-        self.date_of_birth_input(24, 'August', 1994)
-        self.fill_subjects('Maths')
-        self.choose_hobby('Sports')
-        self.upload_pic('test.png')
-        self.fill_current_adress('Test-city, test street, test house 2')
-        self.select_state('NCR')
-        self.select_city('Delphi')
+        self.fill_first_name(student.first_name)
+        self.fill_last_name(student.last_name)
+        self.fill_email(student.email)
+        self.pick_gender(student.gender)
+        self.fill_phone(student.phone_number)
+        self.date_of_birth_input(student.date_of_birth)
+        self.fill_subjects(student.subject)
+        self.choose_hobby(student.hobby)
+        self.upload_pic(student.picture_file)
+        self.fill_current_adress(student.address)
+        self.select_state(student.state)
+        self.select_city(student.city)
         self.submit_form()
 
     def should_have_registered(self, student: User):
