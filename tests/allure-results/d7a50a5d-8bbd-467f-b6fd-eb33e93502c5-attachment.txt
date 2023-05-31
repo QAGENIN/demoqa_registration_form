@@ -1,4 +1,0 @@
-{'level': 'SEVERE', 'message': 'https://tags.crwdcntrl.net/lt/c/16589/sync.min.js 0:10302 "SYNC.JS: Aborting because TCF string was expected but not present."', 'source': 'console-api', 'timestamp': 1685269688821}
-{'level': 'SEVERE', 'message': 'https://tags.crwdcntrl.net/lt/c/16589/sync.min.js 0:10302 "SYNC.JS: Aborting because no consent was present on the request or stored server-side"', 'source': 'console-api', 'timestamp': 1685269688821}
-{'level': 'SEVERE', 'message': 'https://tags.crwdcntrl.net/lt/c/16589/sync.min.js 0:10302 "SYNC.JS: Aborting due to above errors."', 'source': 'console-api', 'timestamp': 1685269688822}
-{'level': 'SEVERE', 'message': 'https://cdn.ad.plus/player/adplus.js 401:504 Uncaught TypeError: g(...).setup is not a function', 'source': 'javascript', 'timestamp': 1685269689006}
