@@ -1,3 +1,5 @@
+import logging
+
 import pytest
 from selene import browser, Browser, Config
 from selenium import webdriver
@@ -8,10 +10,12 @@ from tests.utils import attach
 
 @pytest.fixture(scope='function')
 def browser_setup():
+    logging.basicConfig(level=logging.DEBUG)
+    logging.info('Retrieving browser from 192.168.0.101:4445')
     options = Options()
     selenoid_capabilities = {
         "browserName": "chrome",
-        "browserVersion": '100.0',
+        "browserVersion": '113.0',
         "selenoid:options": {
             "enableVNC": True,
             "enableVideo": True
@@ -20,7 +24,7 @@ def browser_setup():
     options.capabilities.update(selenoid_capabilities)
 
     driver = webdriver.Remote(
-        command_executor=f"https://user1:1234@selenoid.autotests.cloud/wd/hub",
+        command_executor='http://test:test-password@192.168.0.101:4445/wd/hub',
         options=options
     )
 
