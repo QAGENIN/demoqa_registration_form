@@ -1,57 +1,67 @@
 from demoqa_registration_form.users_data.users import student, User
 from selene import browser, have, be
 import os
-
+import allure
 
 class RegistrationPage:
-    def __init__(self):
-        self.endpoint = '/automation-practice-form'
-
+    @allure.step('Открываем страницу')
     def open(self):
-        browser.open(self.endpoint)
-
+        browser.open('https://demoqa.com/automation-practice-form')
+    @allure.step('Вводим имя')
     def fill_first_name(self, value):
         browser.element('[id="firstName"]').send_keys(value)
-
+    @allure.step('Вводим фамилию')
     def fill_last_name(self, value):
         browser.element('[id="lastName"]').send_keys(value)
 
+    @allure.step('Вводим email')
     def fill_email(self, value):
         browser.element('[id="userEmail"]').send_keys(value)
 
+    @allure.step('Выбираем гендер')
     def pick_gender(self, value):
         browser.element(f'[name="gender"][value={value}]').double_click()
 
+    @allure.step('Вводим номер телефона')
     def fill_phone(self, value):
         browser.element('[id="userNumber"]').send_keys(value)
 
+    @allure.step('Заполняем дату рождения')
     def date_of_birth_input(self, date_of_birth):
         day, month, year = date_of_birth
         browser.element('#dateOfBirthInput').click()
         browser.execute_script('document.getElementById("dateOfBirthInput").value = ""')
         browser.element('#dateOfBirthInput').send_keys(f'{day} {month} {year}').press_enter()
 
+    @allure.step('Выбираем предметы')
     def fill_subjects(self, value):
         browser.element('#subjectsInput').click().send_keys(value).press_enter()
 
+    @allure.step('Выбираем хобби')
     def choose_hobby(self, value):
         browser.all('.custom-control-label').element_by(have.exact_text(value)).click()
 
+    @allure.step('Загружаем картинку')
     def upload_pic(self, pic):
         browser.element('#uploadPicture').send_keys(os.getcwd() + f"/resources/{pic}")
 
+    @allure.step('Вводим адресс')
     def fill_current_adress(self, value):
         browser.element('[id="currentAddress"]').send_keys(value)
 
+    @allure.step('Выбираем штат')
     def select_state(self, value):
         browser.element('#state #react-select-3-input').type(value).press_enter()
 
+    @allure.step('Выбираем город')
     def select_city(self, value):
         browser.element('#city #react-select-4-input').type(value).press_enter()
 
+    @allure.step('Нажимаем кнопку submit')
     def submit_form(self):
         browser.execute_script('document.getElementById("submit").click()')
 
+    @allure.step('Проверяем правильность заполнения формы')
     def assert_user_data(self, student: User):
         full_name = f'{student.first_name} {student.last_name}'
         full_birthday = f'{student.date_of_birth[0]} {student.date_of_birth[1]},{student.date_of_birth[2]}'
