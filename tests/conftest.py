@@ -1,4 +1,3 @@
-import logging
 import pytest
 from selene import Browser, Config, browser
 from selenium import webdriver
@@ -12,10 +11,7 @@ def browser_setup():
     selenoid_capabilities = {
         "browserName": "chrome",
         "browserVersion": '100.0',
-        "selenoid:options": {
-            "enableVNC": True,
-            "enableVideo": True
-        }
+        "selenoid:options": {"enableVNC": True, "enableVideo": True},
     }
     options.capabilities.update(selenoid_capabilities)
 
@@ -28,8 +24,10 @@ def browser_setup():
 
     yield browser
 
-    attach.add_html(browser)
-    attach.add_screenshot(browser)
-    attach.add_logs(browser)
-    attach.add_video(browser)
+    def pytest_sessionfinish(session, exitstatus):
+        if exitstatus == pytest.ExitCode.TESTS_FAILED:
+            attach.add_screenshot(browser)
+            attach.add_logs(browser)
+            attach.add_video(browser)
+
     browser.quit()
