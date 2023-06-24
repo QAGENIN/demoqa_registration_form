@@ -23,16 +23,18 @@ def browser_setup():
 
     browser.config.driver = driver
 
+    yield
 
-@pytest.fixture(scope='function')
-def fail_test_screen():
-    if not pytest.ExitCode.OK:
-        png = browser.driver.get_screenshot_as_png()
-        allure.attach(
-            body=png,
-            name='screenshot',
-            attachment_type=AttachmentType.PNG,
-            extension='.png',
-        )
-    else:
-        browser.quit()
+    if pytest.ExitCode.TESTS_FAILED:
+        try:
+            png = browser.driver.get_screenshot_as_png()
+            allure.attach(
+                body=png,
+                name='screenshot',
+                attachment_type=AttachmentType.PNG,
+                extension='.png',
+            )
+        except:
+            pass
+
+    browser.quit()
