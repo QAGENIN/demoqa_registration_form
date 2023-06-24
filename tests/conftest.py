@@ -23,9 +23,11 @@ def browser_setup():
 
     browser.config.driver = driver
 
-    yield browser
+    yield fail_test_screen()
 
-    if pytest.ExitCode.TESTS_FAILED:
+
+def fail_test_screen():
+    if not pytest.ExitCode.OK:
         png = browser.driver.get_screenshot_as_png()
         allure.attach(
             body=png,
