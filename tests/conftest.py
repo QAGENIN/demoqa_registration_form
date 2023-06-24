@@ -23,9 +23,8 @@ def browser_setup():
 
     browser.config.driver = driver
 
-    yield fail_test_screen()
 
-
+@pytest.fixture(scope='function')
 def fail_test_screen():
     if not pytest.ExitCode.OK:
         png = browser.driver.get_screenshot_as_png()
